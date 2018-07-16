@@ -8,5 +8,6 @@ namespace HaEPluginCore.Console
 {
     public class HaEConsole
     {
+
     }
 }

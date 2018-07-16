@@ -36,32 +36,7 @@ namespace HaEPluginCore.Console
         public sealed override void RecreateControls(bool constructor)
         {
             Elements.Clear();
-            Elements.Add(new MyGuiControlLabel
-            {
-                Text = "HaE Console",
-                OriginAlign = MyGuiDrawAlignEnum.HORISONTAL_RIGHT_AND_VERTICAL_TOP,
-                Position = MyGuiManager.ComputeFullscreenGuiCoordinate(MyGuiDrawAlignEnum.HORISONTAL_RIGHT_AND_VERTICAL_TOP)
-            });
 
-            Controls.Clear();
-            _textBox = new MyGuiControlTextbox
-            {
-                BorderEnabled = false,
-                Enabled = true,
-                OriginAlign = MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP,
-                Position = new Vector2(0.5f)
-            };
-            Controls.Add(_textBox);
-
-            var pistonBtn = new MyGuiControlImageButton
-            {
-                Name = "TorchButton",
-                Text = "Torch",
-                HighlightType = MyGuiControlHighlightType.WHEN_CURSOR_OVER,
-                Visible = true,
-                OriginAlign = MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP
-            };
-            Controls.Add(pistonBtn);
         }
     }
 }
