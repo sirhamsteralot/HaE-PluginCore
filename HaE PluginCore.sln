@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaE PluginCore", "HaE PluginCore\HaE PluginCore.csproj", "{D854B157-64C3-4114-9A3F-83D065BCF6F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaEPluginCore", "HaEPluginCore\HaEPluginCore.csproj", "{ABA42FBC-A75B-4FBD-ABF8-41FB57E2B8E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaEPluginCore.Console", "HaEPluginCore.Console\HaEPluginCore.Console.csproj", "{101505B6-04C7-4E5B-8CB4-13F91A1D9FB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D854B157-64C3-4114-9A3F-83D065BCF6F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D854B157-64C3-4114-9A3F-83D065BCF6F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D854B157-64C3-4114-9A3F-83D065BCF6F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D854B157-64C3-4114-9A3F-83D065BCF6F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABA42FBC-A75B-4FBD-ABF8-41FB57E2B8E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA42FBC-A75B-4FBD-ABF8-41FB57E2B8E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA42FBC-A75B-4FBD-ABF8-41FB57E2B8E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA42FBC-A75B-4FBD-ABF8-41FB57E2B8E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{101505B6-04C7-4E5B-8CB4-13F91A1D9FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{101505B6-04C7-4E5B-8CB4-13F91A1D9FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{101505B6-04C7-4E5B-8CB4-13F91A1D9FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{101505B6-04C7-4E5B-8CB4-13F91A1D9FB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

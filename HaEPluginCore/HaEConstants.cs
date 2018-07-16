@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HaE_PluginCore
+namespace HaEPluginCore
 {
-    public class Class1
+    public static class HaEConstants
     {
-
+        public const float screenScaleConstant = 1.33333337f;
     }
 }

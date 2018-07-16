@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HaE_PluginCore
+namespace HaEPluginCore.Console
 {
-    public class Class1
+    public class HaEConsole
     {
-
     }
 }
