@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HaEPluginCore.Console
 {
-    class HaEConsoleCommand
+    public class HaEConsoleCommand
     {
     }
 }
