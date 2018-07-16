@@ -13,12 +13,15 @@ namespace HaEPluginCore
     {
         public static MySandboxGame instance;
 
+        public static Action OnInit;
         public static Action OnUpdate;
         public static Action OnDispose;
         
         public void Init(object gameInstance)
         {
             instance = (MySandboxGame)gameInstance;
+
+            OnInit?.Invoke();
         }
 
         public void Update()
