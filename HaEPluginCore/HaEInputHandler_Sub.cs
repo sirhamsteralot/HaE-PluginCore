@@ -21,11 +21,22 @@ namespace HaEPluginCore
 
             private DateTime _lastPressed;
 
-            public HaEKeyCombination(MyKeys key, MyKeys modifier, MyKeys modifier2, TimeSpan _timeOut, Action callback)
+            public HaEKeyCombination(MyKeys key, MyKeys modifier, MyKeys modifier2, TimeSpan timeOut, Action callback)
             {
                 _key = key;
                 _modifier = modifier;
                 _modifier2 = modifier2;
+                _timeout = timeOut;
+
+                _callback = callback;
+            }
+
+            public HaEKeyCombination(MyKeys key, MyKeys modifier, MyKeys modifier2, Action callback)
+            {
+                _key = key;
+                _modifier = modifier;
+                _modifier2 = modifier2;
+                _timeout = TimeSpan.Zero;
 
                 _callback = callback;
             }
@@ -35,7 +46,7 @@ namespace HaEPluginCore
                 if ((MyInput.Static.IsKeyPress(_key) && 
                    (MyInput.Static.IsKeyPress(_modifier) || _modifier == MyKeys.None) && 
                    (MyInput.Static.IsKeyPress(_modifier2) || _modifier2 == MyKeys.None)) &&
-                   ((DateTime.Now - _lastPressed) < _timeout))
+                   ((DateTime.Now - _lastPressed) > _timeout))
                 {
                     _lastPressed = DateTime.Now;
 

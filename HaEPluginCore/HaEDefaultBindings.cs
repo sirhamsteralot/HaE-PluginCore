@@ -16,9 +16,7 @@ namespace HaEPluginCore
     {
         public static void BindKeys()
         {
-            TimeSpan quarterSecTimeOut = TimeSpan.FromMilliseconds(250);
-
-            HaEInputHandler.HaEKeyCombination showCrossHair = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.C, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, quarterSecTimeOut, () => {
+            HaEInputHandler.HaEKeyCombination showCrossHair = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.C, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, () => {
 
                 MySandboxGame.Config.ShowCrosshair = !MySandboxGame.Config.ShowCrosshair;
             });

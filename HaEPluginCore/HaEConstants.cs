@@ -9,5 +9,6 @@ namespace HaEPluginCore
     public static class HaEConstants
     {
         public const float screenScaleConstant = 1.33333337f;
+        public static TimeSpan quarterSecTimeOut = TimeSpan.FromMilliseconds(250);
     }
 }
