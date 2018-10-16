@@ -17,10 +17,10 @@ namespace HaEPluginCore.Console
             _instance = this;
 
             HaEInputHandler.HaEKeyCombination enter = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.C, VRage.Input.MyKeys.RightAlt, VRage.Input.MyKeys.None, HaEConsoleScreen.Show);
-            HaEInputHandler.Instance.AddCombination(enter);
+            HaEPluginCore.HaEInputHandler.AddCombination(enter);
 
             HaEInputHandler.HaEKeyCombination exit = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.Escape, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConsoleScreen.Close);
-            HaEInputHandler.Instance.AddCombination(exit);
+            HaEPluginCore.HaEInputHandler.AddCombination(exit);
         }
 
         public void Update()
