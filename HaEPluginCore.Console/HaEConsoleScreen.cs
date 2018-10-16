@@ -52,5 +52,22 @@ namespace HaEPluginCore.Console
             this.m_size = new Vector2(_screenscale, 0.5f);             // Half the screen, drop down from the top
             this.m_position = new Vector2(0.5f, 0.25f);                // HorizontalCenter / Quarter vertical
         }
+
+        public static void Close()
+        {
+            if (_instance != null)
+                _instance.CloseScreen();
+        }
+
+        public override bool CloseScreen()
+        {
+            _instance = null;
+            return base.CloseScreen();
+        }
+
+        protected override void OnClosed()
+        {
+            base.OnClosed();
+        }
     }
 }

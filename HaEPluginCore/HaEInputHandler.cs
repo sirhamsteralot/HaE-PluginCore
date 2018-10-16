@@ -8,10 +8,7 @@ namespace HaEPluginCore
 {
     public partial class HaEInputHandler
     {
-        private static readonly HaEInputHandler _instance = new HaEInputHandler();
-        public static HaEInputHandler Instance => _instance;
-
-        private List<HaEKeyCombination> keyCombinations;
+        private List<HaEKeyCombination> keyCombinations = new List<HaEKeyCombination>();
 
         public void AddCombination(HaEKeyCombination keyCombination)
         {
