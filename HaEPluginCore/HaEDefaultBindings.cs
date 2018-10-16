@@ -14,11 +14,13 @@ namespace HaEPluginCore
 {
     public class HaEDefaultBindings
     {
-        public void BindKeys()
+        public static void BindKeys()
         {
-            HaEInputHandler.HaEKeyCombination showCrossHair = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.C, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, () => {
+            TimeSpan quarterSecTimeOut = TimeSpan.FromMilliseconds(250);
 
-                typeof(MyHudCrosshair).GetProperty("Visible").SetValue(MyHud.Crosshair, !MyHud.Crosshair.Visible);
+            HaEInputHandler.HaEKeyCombination showCrossHair = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.C, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, quarterSecTimeOut, () => {
+
+                MySandboxGame.Config.ShowCrosshair = !MySandboxGame.Config.ShowCrosshair;
             });
             HaEPluginCore.HaEInputHandler.AddCombination(showCrossHair);
             
