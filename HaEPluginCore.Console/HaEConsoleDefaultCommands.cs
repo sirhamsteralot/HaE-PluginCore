@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Scripting;
 using VRage;
 using VRage.Steam;
 
@@ -12,10 +13,36 @@ namespace HaEPluginCore.Console
     {
         public static void RegisterCommands()
         {
+            // Core commands
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Help", "Lists all available commands", Help));
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Hello", "just a test command", HelloWorld));
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenContainer", "opens a competitive container", x => { MySteamService.Static.TriggerPersonalContainer(); return "Crate opened!"; }));
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenCompContainer", "opens a competitive container", x => { MySteamService.Static.TriggerCompetitiveContainer(); return $"Crate opened!"; }));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Hello", "Just a test command", HelloWorld));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Exit", "Exits the game", x => { Environment.Exit(0); return $"Exiting!"; }));
+
+            // Utilities
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenContainer", "Opens a competitive container", x => { MySteamService.Static.TriggerPersonalContainer(); return "Crate opened!"; }));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenCompContainer", "Opens a competitive container", x => { MySteamService.Static.TriggerCompetitiveContainer(); return $"Crate opened!"; }));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Eval", "Runs C# script", Eval));
+
+        }
+
+        public static string Eval(List<string> args)
+        {
+            string combined = "";
+            foreach(string arg in args)
+            {
+                combined += arg;
+            }
+
+            try
+            {
+                var result = HaEConsoleUtils.ScriptManager.ExecuteScript(combined);
+                return result.ToString();
+
+            } catch (CompilationErrorException ex)
+            {
+                return  $"Error executing script!\n" +
+                        $"{ex.Message}";
+            }
         }
 
         public static string HelloWorld(List<string> args)
