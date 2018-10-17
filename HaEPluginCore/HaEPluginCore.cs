@@ -16,7 +16,6 @@ namespace HaEPluginCore
     public class HaEPluginCore : IPlugin
     {
         public static HaEInputHandler HaEInputHandler;
-        public static HaEPluginLoader HaEPluginLoader;
 
         public static MySandboxGame instance;
 
@@ -28,7 +27,6 @@ namespace HaEPluginCore
         {
             instance = (MySandboxGame)gameInstance;
             HaEInputHandler = new HaEInputHandler();
-            HaEPluginLoader = new HaEPluginLoader();
 
             HaEDefaultBindings.BindKeys();
             OnInit?.Invoke();
