@@ -12,26 +12,31 @@ using HaEPluginCore;
 
 namespace HaEPluginCore.Console
 {
-    public class HaEConsoleScreen : MyGuiScreenBase
+    public partial class HaEConsoleScreen : MyGuiScreenBase
     {
         private static HaEConsoleScreen _instance;
 
+        private MyGuiControlMultilineText _displayScreen;
         private MyGuiControlTextbox _textBox;
 
-        private float _screenscale;
+        private string BufferText = "";
+
+        private float _screenScale;
+        private Vector2 _margin;
         
 
         public override string GetFriendlyName() {  return "HaE Console";}
 
         public HaEConsoleScreen() : base(null, null, null, false, null, 0f, 0f)
         {
-            this._screenscale = MyGuiManager.GetHudSize().X / MyGuiManager.GetHudSize().Y / HaEConstants.screenScaleConstant;
+            this._screenScale = MyGuiManager.GetHudSize().X / MyGuiManager.GetHudSize().Y / HaEConstants.screenScaleConstant;
 
             this.m_backgroundTexture = MyGuiConstants.TEXTURE_MESSAGEBOX_BACKGROUND_INFO.Texture;
             this.m_backgroundColor = new Vector4(0, 0, 0, 0.5f);       // Grey, half opacity
-            this.m_size = new Vector2(_screenscale, 0.5f);             // Half the screen, drop down from the top
+            this.m_size = new Vector2(_screenScale, 0.5f);             // Half the screen, drop down from the top
             this.m_position = new Vector2(0.5f, 0.25f);                // HorizontalCenter / Quarter vertical
 
+            _margin = new Vector2(0.06f, 0.04f);                       // Margin
 
             RecreateControls(true);
         }
@@ -49,9 +54,33 @@ namespace HaEPluginCore.Console
 
             this.m_backgroundTexture = MyGuiConstants.TEXTURE_MESSAGEBOX_BACKGROUND_INFO.Texture;
             this.m_backgroundColor = new Vector4(0, 0, 0, 0.5f);       // Grey, half opacity
-            this.m_size = new Vector2(_screenscale, 0.5f);             // Half the screen, drop down from the top
+            this.m_size = new Vector2(_screenScale, 0.5f);             // Half the screen, drop down from the top
             this.m_position = new Vector2(0.5f, 0.25f);                // HorizontalCenter / Quarter vertical
+
+            base.RecreateControls(constructor);
+
+            Vector4 value = new Vector4(1f, 1f, 0f, 1f);
+            float textScale = 1f;
+
+            _textBox = new MyGuiControlTextbox(new Vector2?(new Vector2(0f, 0.25f)), null, 512, new Vector4?(value), 0.8f, MyGuiControlTextboxType.Normal, MyGuiControlTextboxStyleEnum.Default);
+            _textBox.Position -= new Vector2(0f, _textBox.Size.Y + _margin.Y / 2f);
+            _textBox.Size = new Vector2(_screenScale, _textBox.Size.Y) - 2f * _margin;
+            _textBox.ColorMask = new Vector4(0f, 0f, 0f, 0.5f);
+            _textBox.VisualStyle = MyGuiControlTextboxStyleEnum.Debug;
+            _textBox.Name = "HaE CMD";
+
+            _displayScreen = new MyGuiControlMultilineText(new Vector2?(new Vector2(-0.5f * _screenScale, -0.25f) + _margin), new Vector2?(new Vector2(_screenScale, 0.5f - _textBox.Size.Y) - 2f * _margin), null, "Debug", 0.8f, MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP, null, true, true, MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP, null, true, false, null, null);
+            _displayScreen.TextColor = Color.Red;
+            _displayScreen.TextScale = textScale;
+            _displayScreen.OriginAlign = MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP;
+            _displayScreen.Text = HaEConsole.Instance.displayScreen;
+            _displayScreen.ColorMask = new Vector4(0f, 0f, 0f, 0.5f);
+            _displayScreen.Name = "DisplayScreen";
+
+            this.Controls.Add(_textBox);
+            this.Controls.Add(_displayScreen);
         }
+
 
         public static void Close()
         {
