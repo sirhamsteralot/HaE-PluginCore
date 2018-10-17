@@ -16,10 +16,10 @@ namespace HaEPluginCore.Console
     {
         private static HaEConsoleScreen _instance;
 
-        private MyGuiControlMultilineText _displayScreen;
-        private MyGuiControlTextbox _textBox;
+        private static MyGuiControlMultilineText _displayScreen;
+        private static MyGuiControlTextbox _textBox;
 
-        private string BufferText = "";
+        private static string BufferText = "";
 
         private float _screenScale;
         private Vector2 _margin;
@@ -70,7 +70,7 @@ namespace HaEPluginCore.Console
             _textBox.Name = "HaE CMD";
 
             _displayScreen = new MyGuiControlMultilineText(new Vector2?(new Vector2(-0.5f * _screenScale, -0.25f) + _margin), new Vector2?(new Vector2(_screenScale, 0.5f - _textBox.Size.Y) - 2f * _margin), null, "Debug", 0.8f, MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP, null, true, true, MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP, null, true, false, null, null);
-            _displayScreen.TextColor = Color.Red;
+            _displayScreen.TextColor = Color.Yellow;
             _displayScreen.TextScale = textScale;
             _displayScreen.OriginAlign = MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP;
             _displayScreen.Text = HaEConsole.Instance.displayScreen;

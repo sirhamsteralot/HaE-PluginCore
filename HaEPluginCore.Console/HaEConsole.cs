@@ -30,9 +30,11 @@ namespace HaEPluginCore.Console
             HaEInputHandler.HaEKeyCombination exit = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.Escape, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, HaEConsoleScreen.Close);
             HaEPluginCore.HaEInputHandler.AddCombination(exit);
 
+            _displayScreen = new StringBuilder();
             _commandHistory = new LinkedList<string>();
             commands = new Dictionary<string, HaEConsoleCommand>();
 
+            HaEConsoleScreen.RegisterKeys();
             HaEConsoleDefaultCommands.RegisterCommands();
         }
 
@@ -59,19 +61,22 @@ namespace HaEPluginCore.Console
         {
             List<string> split = HaEConsoleUtils.SplitArgs(command);
 
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(command);
+
             if (split.Count <= 0)
             {
-                return new StringBuilder("Error, Empty!");
+                return sb.Append("Error, Empty!");
             }
 
             string key = split[0];
             HaEConsoleCommand consoleCommand;
             if (!commands.TryGetValue(key, out consoleCommand))
-                return new StringBuilder($"Error, command {key} not found!");
+                return sb.Append($"Error, command {key} not found!");
 
             split.RemoveAt(0);
             
-            return new StringBuilder().AppendLine(command).Append(consoleCommand.Action.Invoke(split));
+            return sb.Append(consoleCommand.Action.Invoke(split));
         }
 
         public void NextLine()

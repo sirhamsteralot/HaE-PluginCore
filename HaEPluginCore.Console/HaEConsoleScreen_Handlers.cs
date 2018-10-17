@@ -14,23 +14,27 @@ namespace HaEPluginCore.Console
 {
     public partial class HaEConsoleScreen : MyGuiScreenBase
     {
-        public void RegisterKeys()
+
+        public static void RegisterKeys()
         {
-            HaEInputHandler.HaEKeyCombination enter = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.Enter, VRage.Input.MyKeys.RightAlt, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, HandleEnter);
+            HaEInputHandler.HaEKeyCombination enter = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.Enter, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, HandleEnter);
             HaEPluginCore.HaEInputHandler.AddCombination(enter);
         }
         
-        public void HandleEnter()
+        public static void HandleEnter()
         {
-            if (!(base.FocusedControl == _textBox) || _textBox.Text.Equals(""))
+            if (_instance == null)
                 return;
 
-            BufferText = "";
-            HaEConsole.Instance.ParseCommand(_textBox.Text);
-            HaEConsole.Instance.NextLine();
-            _displayScreen.Text = HaEConsole.Instance.displayScreen;
-            _displayScreen.ScrollbarOffsetV = 1f;
-            _textBox.Text = "";
+            if (_instance.FocusedControl == _textBox && !_textBox.Text.Equals(""))
+            {
+                BufferText = "";
+                HaEConsole.Instance.ParseCommand(_textBox.Text);
+                HaEConsole.Instance.NextLine();
+                _displayScreen.Text = HaEConsole.Instance.displayScreen;
+                _displayScreen.ScrollbarOffsetV = 1f;
+                _textBox.Text = "";
+            }
         }
 
     }
