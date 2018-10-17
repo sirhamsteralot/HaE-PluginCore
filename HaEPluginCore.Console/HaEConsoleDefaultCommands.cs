@@ -16,27 +16,26 @@ namespace HaEPluginCore.Console
             // Core commands
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Help", "Lists all available commands", Help));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Hello", "Just a test command", HelloWorld));
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Exit", "Exits the game", x => { Environment.Exit(0); return $"Exiting!"; }));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Clear", "Clears the console", (List<string> x) => { HaEConsole.Instance.Clear(); return ""; }));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Exit", "Exits the game", (List<string> x) => { Environment.Exit(0); return $"Exiting!"; }));
 
             // Utilities
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenContainer", "Opens a competitive container", x => { MySteamService.Static.TriggerPersonalContainer(); return "Crate opened!"; }));
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenCompContainer", "Opens a competitive container", x => { MySteamService.Static.TriggerCompetitiveContainer(); return $"Crate opened!"; }));
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Eval", "Runs C# script", Eval));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenContainer", "Opens a competitive container", (List<string> x) => { MySteamService.Static.TriggerPersonalContainer(); return "Crate opened!"; }));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenCompContainer", "Opens a competitive container", (List<string> x) => { MySteamService.Static.TriggerCompetitiveContainer(); return $"Crate opened!"; }));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Eval", "Runs C# script", HandleAsync));
 
         }
 
-        public static string Eval(List<string> args)
+        public static string HandleAsync(string arg)
         {
-            string combined = "";
-            foreach(string arg in args)
-            {
-                combined += " " + arg;
-            }
-
+            return Eval(arg).GetAwaiter().GetResult();
+        }
+        public async static Task<string> Eval(string arg)
+        {
             try
             {
-                var result = HaEConsoleUtils.ScriptManager.ExecuteScript(combined);
-                return result.ToString();
+                var result = await HaEConsoleUtils.ScriptManager.ExecuteScript(arg);
+                return result?.ToString();
 
             } catch (CompilationErrorException ex)
             {

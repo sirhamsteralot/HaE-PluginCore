@@ -19,8 +19,22 @@ namespace HaEPluginCore.Console
         {
             HaEInputHandler.HaEKeyCombination enter = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.Enter, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, HandleEnter);
             HaEPluginCore.HaEInputHandler.AddCombination(enter);
+
+            HaEInputHandler.HaEKeyCombination back = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.Up, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, HandlePrevious);
+            HaEPluginCore.HaEInputHandler.AddCombination(back);
+
         }
-        
+
+        public static void HandlePrevious()
+        {
+            HaEConsole.Instance.PreviousLine();
+
+            _textBox.Text = HaEConsole.Instance.GetLine();
+            _textBox.MoveCarriageToEnd();
+
+            _instance.FocusedControl = _textBox;
+        }
+
         public static void HandleEnter()
         {
             if (_instance == null)

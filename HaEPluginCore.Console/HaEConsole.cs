@@ -75,8 +75,22 @@ namespace HaEPluginCore.Console
                 return sb.Append($"Error, command {key} not found!");
 
             split.RemoveAt(0);
+            string result = "";
+            if (consoleCommand.RequireFullArg)
+            {
+                string input = command.Substring(key.Length + 1);
+                result = consoleCommand.FullArgAction.Invoke(input);
+            } else
+            {
+                result = consoleCommand.Action.Invoke(split);
+            }
+
+
             
-            return sb.Append(consoleCommand.Action.Invoke(split));
+            if (result != null)
+                return sb.Append(result);
+
+            return sb.Append($"Error, command returned NULL!");
         }
 
         public void NextLine()
@@ -98,6 +112,15 @@ namespace HaEPluginCore.Console
             {
                 _position = _position.Previous;
             }
+        }
+
+        public string GetLine()
+        {
+            if (_position == null)
+            {
+                return "";
+            }
+            return _position.Value;
         }
 
         public void Clear()

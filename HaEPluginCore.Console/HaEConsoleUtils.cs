@@ -34,6 +34,8 @@ namespace HaEPluginCore.Console
 
         public static class ScriptManager
         {
+            static readonly Dictionary<string, AssemblyName> AssemblyNames = new Dictionary<string, AssemblyName>();
+
             public static async Task<object> ExecuteScript(string code)
             {
                 var op = ScriptOptions.Default

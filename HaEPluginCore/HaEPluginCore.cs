@@ -17,6 +17,7 @@ namespace HaEPluginCore
     {
         public static HaEInputHandler HaEInputHandler;
 
+        public static HaEPluginCore pluginCore;
         public static MySandboxGame instance;
 
         public static Action OnInit;
@@ -25,8 +26,12 @@ namespace HaEPluginCore
         
         public void Init(object gameInstance)
         {
+            HaEAssemblyResolver.ResolveAssembliesIn(new DirectoryInfo("Plugins/Roslyn"));
+
             instance = (MySandboxGame)gameInstance;
             HaEInputHandler = new HaEInputHandler();
+            pluginCore = this;
+
 
             HaEDefaultBindings.BindKeys();
             OnInit?.Invoke();
