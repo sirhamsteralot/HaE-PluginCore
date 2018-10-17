@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VRage;
+using VRage.Steam;
 
 namespace HaEPluginCore.Console
 {
@@ -10,8 +12,10 @@ namespace HaEPluginCore.Console
     {
         public static void RegisterCommands()
         {
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Hello", "just a test command", HelloWorld));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Help", "Lists all available commands", Help));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Hello", "just a test command", HelloWorld));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenContainer", "opens a competitive container", x => { MySteamService.Static.TriggerPersonalContainer(); return "Crate opened!"; }));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenCompContainer", "opens a competitive container", x => { MySteamService.Static.TriggerCompetitiveContainer(); return $"Crate opened!"; }));
         }
 
         public static string HelloWorld(List<string> args)
