@@ -30,7 +30,7 @@ namespace HaEPluginCore.Console
             string combined = "";
             foreach(string arg in args)
             {
-                combined += arg;
+                combined += " " + arg;
             }
 
             try
