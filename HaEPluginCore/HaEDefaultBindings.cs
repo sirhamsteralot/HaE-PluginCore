@@ -16,7 +16,7 @@ namespace HaEPluginCore
     {
         public static void BindKeys()
         {
-            HaEInputHandler.HaEKeyCombination showCrossHair = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.C, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, () => {
+            HaEInputHandler.HaEKeyCombination showCrossHair = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.OemPlus, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, () => {
 
                 MySandboxGame.Config.ShowCrosshair = !MySandboxGame.Config.ShowCrosshair;
             });
