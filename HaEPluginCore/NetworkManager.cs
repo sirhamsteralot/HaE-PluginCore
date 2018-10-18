@@ -28,12 +28,50 @@ namespace HaEPluginCore
 
         private static MethodInfo DispatchEventInfo => _dispatchInfo ?? (_dispatchInfo = typeof(MyReplicationLayerBase).GetMethod("DispatchEvent", BindingFlags.NonPublic | BindingFlags.Instance));
 
-        [ReflectedGetter(Name = "m_typeTable")]
-        private static Func<MyReplicationLayerBase, MyTypeTable> _typeTableGetter;
+        private static Func<MyReplicationLayerBase, MyTypeTable> _tableFunc;
+        private static Func<MyReplicationLayerBase, MyTypeTable> _typeTableGetter
+        {
+            get
+            {
+                if (_tableFunc == null)
+                {
+                    var tablefield = typeof(MyReplicationLayerBase).GetField("m_typeTable", BindingFlags.NonPublic | BindingFlags.Instance);
+                    _tableFunc = tablefield.CreateGetter<MyReplicationLayerBase, MyTypeTable>();
+                }
+                return _tableFunc;
+            }
+        }
         [ReflectedGetter(Name = "m_methodInfoLookup")]
-        private static Func<MyEventTable, Dictionary<MethodInfo, CallSite>> _methodInfoLookupGetter;
+        private static Func<MyEventTable, Dictionary<MethodInfo, CallSite>> _methodInfoLookupFunc;
+
+        private static Func<MyEventTable, Dictionary<MethodInfo, CallSite>> _methodInfoLookupGetter
+        {
+            get
+            {
+                if (_methodInfoLookupFunc == null)
+                {
+                    var lookupField = typeof(MyEventTable).GetField("m_methodInfoLookup", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                    _methodInfoLookupFunc = lookupField.CreateGetter<MyEventTable, Dictionary<MethodInfo, CallSite>>();
+                }
+                return _methodInfoLookupFunc;
+            }
+        }
         [ReflectedMethod(Type = typeof(MyReplicationLayer), Name = "GetObjectByNetworkId")]
-        private static Func<MyReplicationLayer, NetworkId, IMyNetObject> _getObjectByNetworkId;
+        private static Func<MyReplicationLayer, NetworkId, IMyNetObject> _getObjectFunc;
+
+        private static Func<MyReplicationLayer, NetworkId, IMyNetObject> _getObjectByNetworkId
+        {
+            get
+            {
+                if (_getObjectFunc == null)
+                {
+                    var method = typeof(MyReplicationLayer).GetMethod("GetObjectByNetworkId", BindingFlags.NonPublic | BindingFlags.Instance);
+                    _getObjectFunc = (ob, id) => (IMyNetObject)method.Invoke(ob, new object[] { id });
+                }
+                return _getObjectFunc;
+            }
+        }
 
         private static bool ReflectionUnitTest(bool suppress = false)
         {
