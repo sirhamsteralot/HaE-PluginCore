@@ -32,7 +32,6 @@ namespace HaEPluginCore
             HaEInputHandler = new HaEInputHandler();
             pluginCore = this;
 
-
             HaEDefaultBindings.BindKeys();
             OnInit?.Invoke();
         }
