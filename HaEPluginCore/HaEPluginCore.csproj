@@ -136,7 +136,11 @@
     <Compile Include="HaEInputHandler.cs" />
     <Compile Include="HaEInputHandler_Sub.cs" />
     <Compile Include="HaEPluginCore.cs" />
+    <Compile Include="INetworkManager.cs" />
+    <Compile Include="NetworkhandlerBase.cs" />
+    <Compile Include="NetworkManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
