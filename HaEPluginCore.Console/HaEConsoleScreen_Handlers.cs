@@ -27,6 +27,9 @@ namespace HaEPluginCore.Console
 
         public static void HandlePrevious()
         {
+            if (HaEConsole.Instance == null || _instance == null)
+                return;
+
             HaEConsole.Instance.PreviousLine();
 
             _textBox.Text = HaEConsole.Instance.GetLine();

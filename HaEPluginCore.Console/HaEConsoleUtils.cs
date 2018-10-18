@@ -36,14 +36,13 @@ namespace HaEPluginCore.Console
         public static class ScriptManager
         {
             static readonly Dictionary<string, AssemblyName> AssemblyNames = new Dictionary<string, AssemblyName>();
+            public static ScriptOptions op = ScriptOptions.Default
+                                      .WithReferences("System.Runtime, Version = 4.0.0.0, Culture = neutral, PublicKeyToken = b03f5f7f11d50a3a")
+                                      .WithReferences(typeof(List<>).Assembly, typeof(Enumerable).Assembly, typeof(string).Assembly, typeof(HaEPluginCore).Assembly, typeof(StringBuilder).Assembly, typeof(SpaceEngineersGame).Assembly)
+                                      .WithImports("System", "System.Collections.Generic", "System.Timers", "System.Linq", "System.Text", "HaEPluginCore");
 
             public static async Task<object> ExecuteScript(string code)
             {
-                var op = ScriptOptions.Default
-                                      .WithReferences("System.Runtime, Version = 4.0.0.0, Culture = neutral, PublicKeyToken = b03f5f7f11d50a3a")
-                                      .WithReferences(typeof(List<>).Assembly, typeof(Enumerable).Assembly, typeof(string).Assembly, typeof(HaEPluginCore).Assembly, typeof(StringBuilder).Assembly, typeof(SpaceEngineersGame).Assembly)
-                                      .WithImports ("System", "System.Collections.Generic", "System.Timers", "System.Linq", "System.Text", "HaEPluginCore");
-
                 var res = await CSharpScript.EvaluateAsync<object>(code, op);
                 GC.Collect();
 
