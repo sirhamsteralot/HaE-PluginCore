@@ -26,7 +26,7 @@ namespace HaEPluginCore
         
         public void Init(object gameInstance)
         {
-            HaEAssemblyResolver.ResolveAssembliesIn(new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
+            HaEAssemblyResolver.ResolveAssembliesIn(new DirectoryInfo(Path.GetDirectoryName(typeof(HaEPluginCore).Assembly.Location)));
 
 
             instance = (MySandboxGame)gameInstance;
