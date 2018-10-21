@@ -9,7 +9,7 @@ using Sandbox;
 using VRage.Plugins;
 using VRage.Collections;
 using VRage.FileSystem;
-using SpaceEngineers.Game;
+
 
 namespace HaEPluginCore
 {
@@ -26,7 +26,7 @@ namespace HaEPluginCore
         
         public void Init(object gameInstance)
         {
-            HaEAssemblyResolver.ResolveAssembliesIn(new DirectoryInfo(Path.GetDirectoryName(typeof(SpaceEngineersGame).Assembly.Location)));
+            HaEAssemblyResolver.ResolveAssembliesIn(new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
 
 
             instance = (MySandboxGame)gameInstance;
