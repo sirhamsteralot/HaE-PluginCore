@@ -26,7 +26,7 @@ namespace HaEPluginCore
         
         public void Init(object gameInstance)
         {
-            HaEAssemblyResolver.ResolveAssembliesIn(new DirectoryInfo("Plugins/Roslyn"));
+            HaEAssemblyResolver.ResolveAssembliesIn(new DirectoryInfo(""));
 
             instance = (MySandboxGame)gameInstance;
             HaEInputHandler = new HaEInputHandler();

@@ -13,7 +13,17 @@ namespace HaEPluginCore
 
         public static void ResolveAssembliesIn(DirectoryInfo directory)
         {
-            foreach (var dllFileName in directory.EnumerateFiles("*.dll"))
+            EnumerateDirectory(directory);
+            foreach (DirectoryInfo d in directory.EnumerateDirectories())
+            {
+                EnumerateDirectory(d);
+            }
+            AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
+        }
+
+        private static void EnumerateDirectory(DirectoryInfo d)
+        {
+            foreach (var dllFileName in d.EnumerateFiles("*.dll"))
             {
                 AssemblyName assemblyName;
                 try
@@ -27,7 +37,6 @@ namespace HaEPluginCore
                 }
                 AssemblyNames[assemblyName.FullName] = assemblyName;
             }
-            AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
         }
 
         private static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
