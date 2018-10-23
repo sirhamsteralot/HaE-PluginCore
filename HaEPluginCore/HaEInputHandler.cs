@@ -15,6 +15,16 @@ namespace HaEPluginCore
             keyCombinations.Add(keyCombination);
         }
 
+        public void RemoveCombination(HaEKeyCombination keyCombination)
+        {
+            for (int i = 0; i < keyCombinations.Count; i++)
+            {
+                if (keyCombinations[i].Equals(keyCombination)) {
+                    keyCombinations.RemoveAtFast(i);
+                }
+            }
+        }
+
         public HaEInputHandler()
         {
             HaEPluginCore.OnUpdate += Update;

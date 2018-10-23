@@ -9,7 +9,7 @@ namespace HaEPluginCore
 {
     public partial class HaEInputHandler
     {
-        public class HaEKeyCombination
+        public class HaEKeyCombination : IEquatable<HaEKeyCombination>
         {
             private readonly MyKeys _key;
             private readonly MyKeys _modifier;
@@ -52,6 +52,11 @@ namespace HaEPluginCore
 
                     _callback?.Invoke();
                 }
+            }
+
+            public bool Equals(HaEKeyCombination other)
+            {
+                return ((other._key == _key) && (other._modifier == _modifier) && (other._modifier2 == _modifier2)) && (other._callback == _callback);
             }
         }
     }
