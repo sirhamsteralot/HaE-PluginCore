@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Scripting;
 using VRage;
 using VRage.Steam;
+using Sandbox.Game.Gui;
+using Sandbox.Game.GUI;
+using Sandbox.Graphics.GUI;
+using Sandbox.Gui;
+using System.Reflection;
 
 namespace HaEPluginCore.Console
 {
@@ -23,7 +28,21 @@ namespace HaEPluginCore.Console
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenContainer", "Opens a competitive container", (List<string> x) => { MySteamService.Static.TriggerPersonalContainer(); return "Crate opened!"; }));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenCompContainer", "Opens a competitive container", (List<string> x) => { MySteamService.Static.TriggerCompetitiveContainer(); return $"Crate opened!"; }));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Eval", "Runs C# script", HandleAsync));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("RemoveBlockInfo", "Toggles block info", RemoveBlockInfo));
 
+        }
+
+        public static string RemoveBlockInfo(List<string> arg)
+        {
+            FieldInfo field = typeof(MyGuiScreenHudSpace).GetField("m_contextHelp", BindingFlags.NonPublic | BindingFlags.Instance);
+            MyGuiControlContextHelp control = field.GetValue(MyGuiScreenHudSpace.Static) as MyGuiControlContextHelp;
+
+            if (control == null)
+                return "blockInfo is null!";
+
+            control.Alpha = 0;
+
+            return $"Removed!";
         }
 
         public static string HandleAsync(string arg)
