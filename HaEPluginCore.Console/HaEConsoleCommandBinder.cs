@@ -41,7 +41,7 @@ namespace HaEPluginCore.Console
 
             foreach (var command in commands)
             {
-                sb.AppendLine($"{command.bindingName}: \"{command.Command}\" {command._key}+{command._modifier}+{command._modifier2}");
+                sb.AppendLine($"{command.bindingName}: \"{command.Command}\" {command.key}+{command.modifier}+{command.modifier2}");
             }
 
             return sb.ToString();
@@ -61,17 +61,17 @@ namespace HaEPluginCore.Console
             MyKeys key;
             if (!Enum.TryParse(args[1], out key))
                 return "Could not parse key!";
-            boundCommand._key = key;
+            boundCommand.key = key;
 
             MyKeys modifier;
             if (!Enum.TryParse(args[2], out modifier))
                 return "Could not parse modifier!";
-            boundCommand._modifier = modifier;
+            boundCommand.modifier = modifier;
 
             MyKeys modifier2;
             if (!Enum.TryParse(args[3], out modifier2))
                 return "Could not parse modifier2!";
-            boundCommand._modifier2 = modifier2;
+            boundCommand.modifier2 = modifier2;
 
             commands.Add(boundCommand);
             BindFromBoundCommand(boundCommand);
@@ -130,7 +130,7 @@ namespace HaEPluginCore.Console
 
         public void BindFromBoundCommand(BoundCommand command)
         {
-            HaEInputHandler.HaEKeyCombination keyCombination = new HaEInputHandler.HaEKeyCombination(command._key, command._modifier, command._modifier2, HaEConstants.quarterSecTimeOut, command.Execute);
+            HaEInputHandler.HaEKeyCombination keyCombination = new HaEInputHandler.HaEKeyCombination(command.key, command.modifier, command.modifier2, HaEConstants.quarterSecTimeOut, command.Execute);
             HaEPluginCore.HaEInputHandler.AddCombination(keyCombination);
 
             command.keyCombo = keyCombination;
@@ -160,9 +160,9 @@ namespace HaEPluginCore.Console
             public string bindingName;
             public string Command;
 
-            public MyKeys _key;
-            public MyKeys _modifier;
-            public MyKeys _modifier2;
+            public MyKeys key;
+            public MyKeys modifier;
+            public MyKeys modifier2;
 
             public BoundCommand()
             {
