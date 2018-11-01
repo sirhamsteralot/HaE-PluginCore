@@ -38,8 +38,6 @@ namespace HaEPluginCore.Console
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenCompContainer", "Opens a competitive container", (List<string> x) => { MySteamService.Static.TriggerCompetitiveContainer(); return $"Crate opened!"; }));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Eval", "Runs C# script", HandleAsync));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("RemoveBlockInfo", "Toggles block info", RemoveBlockInfo));
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("ChangeFOV", "Changes the FOV, Usage: ChangeFOV {Value}", ChangeFOV));
-        }
 
         public static string ChangeFOV(List<string> arg)
         {
