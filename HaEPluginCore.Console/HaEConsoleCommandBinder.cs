@@ -41,7 +41,7 @@ namespace HaEPluginCore.Console
 
             foreach (var command in commands)
             {
-                sb.AppendLine($"{command.bindingName}: \"{command.Command}\"");
+                sb.AppendLine($"{command.bindingName}: \"{command.Command}\" {command._key}+{command._modifier}+{command._modifier2}");
             }
 
             return sb.ToString();
