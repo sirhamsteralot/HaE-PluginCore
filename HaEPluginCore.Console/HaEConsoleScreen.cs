@@ -10,6 +10,7 @@ using VRage.Utils;
 using VRageMath;
 using HaEPluginCore;
 
+
 namespace HaEPluginCore.Console
 {
     public partial class HaEConsoleScreen : MyGuiScreenBase
@@ -18,6 +19,7 @@ namespace HaEPluginCore.Console
 
         private static MyGuiControlMultilineText _displayScreen;
         private static MyGuiControlTextbox _textBox;
+        private static MyGuiControlImage _logo;
 
         private static string BufferText = "";
 
@@ -59,26 +61,34 @@ namespace HaEPluginCore.Console
 
             base.RecreateControls(constructor);
 
-            Vector4 value = new Vector4(1f, 1f, 0f, 1f);
+            Vector4 value = new Vector4(1f, 1f, 1f, 1f);
             float textScale = 1f;
 
             _textBox = new MyGuiControlTextbox(new Vector2?(new Vector2(0f, 0.25f)), null, 512, new Vector4?(value), 0.8f, MyGuiControlTextboxType.Normal, MyGuiControlTextboxStyleEnum.Default);
             _textBox.Position -= new Vector2(0f, _textBox.Size.Y + _margin.Y / 2f);
             _textBox.Size = new Vector2(_screenScale, _textBox.Size.Y) - 2f * _margin;
             _textBox.ColorMask = new Vector4(0f, 0f, 0f, 0.5f);
-            _textBox.VisualStyle = MyGuiControlTextboxStyleEnum.Debug;
+            _textBox.VisualStyle = MyGuiControlTextboxStyleEnum.Default;
             _textBox.Name = "HaE CMD";
 
             _displayScreen = new MyGuiControlMultilineText(new Vector2?(new Vector2(-0.5f * _screenScale, -0.25f) + _margin), new Vector2?(new Vector2(_screenScale, 0.5f - _textBox.Size.Y) - 2f * _margin), null, "Debug", 0.8f, MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP, null, true, true, MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP, null, true, false, null, null);
-            _displayScreen.TextColor = Color.Yellow;
+            _displayScreen.TextColor = Color.White;
             _displayScreen.TextScale = textScale;
             _displayScreen.OriginAlign = MyGuiDrawAlignEnum.HORISONTAL_LEFT_AND_VERTICAL_TOP;
             _displayScreen.Text = HaEConsole.Instance.displayScreen;
             _displayScreen.ColorMask = new Vector4(0f, 0f, 0f, 0.5f);
             _displayScreen.Name = "DisplayScreen";
 
+            _logo = new MyGuiControlImage(new Vector2?(new Vector2(0.46f*_screenScale, -0.24f)), new Vector2?(new Vector2(0.05f, _screenScale * 0.05f)), null, null, new string[]
+                {
+                    $"{HaEConstants.pluginFolder}\\Assets\\logo.png"
+                }, null, MyGuiDrawAlignEnum.HORISONTAL_RIGHT_AND_VERTICAL_TOP);
+            _logo.ColorMask = new Vector4(1f, 1f, 1f, 0.5f);
+            _logo.SetToolTip("HaE PluginCore");
+
             this.Controls.Add(_textBox);
             this.Controls.Add(_displayScreen);
+            this.Controls.Add(_logo);
         }
 
 
