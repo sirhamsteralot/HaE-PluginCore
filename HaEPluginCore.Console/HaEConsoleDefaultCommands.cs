@@ -43,6 +43,9 @@ namespace HaEPluginCore.Console
 
         public static string ChangeFOV(List<string> arg)
         {
+            if (arg.Count < 1)
+                return "not enough arugmens!";
+
             float fovSetting;
 
             if (float.TryParse(arg[0], out fovSetting))

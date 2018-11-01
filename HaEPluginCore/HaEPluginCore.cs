@@ -35,8 +35,6 @@ namespace HaEPluginCore
 
             HaEDefaultBindings.BindKeys();
             OnInit?.Invoke();
-
-            HaEPluginConfigurationHandler.DeSerialize();
         }
 
         public void Update()
@@ -46,7 +44,6 @@ namespace HaEPluginCore
 
         public void Dispose()
         {
-            HaEPluginConfigurationHandler.Serialize();
             OnDispose?.Invoke();
         }
     }

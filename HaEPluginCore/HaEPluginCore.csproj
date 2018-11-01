@@ -135,7 +135,6 @@
     <Compile Include="HaEDefaultBindings.cs" />
     <Compile Include="HaEInputHandler.cs" />
     <Compile Include="HaEInputHandler_Sub.cs" />
-    <Compile Include="HaEPluginConfigurationHandler.cs" />
     <Compile Include="HaEPluginCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

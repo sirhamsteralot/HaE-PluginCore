@@ -12,15 +12,22 @@ namespace HaEPluginCore
 
         public void AddCombination(HaEKeyCombination keyCombination)
         {
-            keyCombinations.Add(keyCombination);
+            lock (keyCombinations)
+            {
+                keyCombinations.Add(keyCombination);
+            }
         }
 
         public void RemoveCombination(HaEKeyCombination keyCombination)
         {
-            for (int i = 0; i < keyCombinations.Count; i++)
+            lock (keyCombinations)
             {
-                if (keyCombinations[i].Equals(keyCombination)) {
-                    keyCombinations.RemoveAtFast(i);
+                for (int i = 0; i < keyCombinations.Count; i++)
+                {
+                    if (keyCombinations[i].Equals(keyCombination))
+                    {
+                        keyCombinations.RemoveAtFast(i);
+                    }
                 }
             }
         }
@@ -32,8 +39,14 @@ namespace HaEPluginCore
 
         private void Update()
         {
-            foreach (HaEKeyCombination keyCombination in keyCombinations)
-                keyCombination.CheckCombinationPressed();
+            lock (keyCombinations)
+            {
+                for (int i = 0; i < keyCombinations.Count; i++)
+                {
+                    if (i < keyCombinations.Count)
+                        keyCombinations[i].CheckCombinationPressed();
+                }
+            }
         }
     }
 }

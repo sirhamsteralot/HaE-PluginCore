@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 using HaEPluginCore;
 using VRage.Input;
 
@@ -10,10 +13,12 @@ namespace HaEPluginCore.Console
 {
     public class HaEConsoleCommandBinder
     {
-        public static WriteConfig configurationWriter = new WriteConfig(null, "HaEConsoleCommandBinderConfig.bin");
+        public static WriteConfig configurationWriter;
+        public static string StoragePath => Path.GetDirectoryName(typeof(HaEConsoleCommandBinder).Assembly.Location);
 
         public HaEConsoleCommandBinder()
         {
+            configurationWriter = new WriteConfig("HaEConsoleCommandBinderConfig.bin");
             DeSerialize();
             RegisterCommands();
         }
@@ -22,6 +27,22 @@ namespace HaEPluginCore.Console
         {
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("AddBinding", "Binds Console Command to key, Usage: AddBinding {name} {key} {modifier} {modifier2} \"{command}\"", AddBinding));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("RemoveBinding", "Unbinds Console Command from key", RemoveBound));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("ListBound", "Lists all bound commands", ListBound));
+        }
+
+        public string ListBound(List<string> args)
+        {
+            StringBuilder sb = new StringBuilder();
+            List<BoundCommand> commands = configurationWriter.BoundCommands;
+
+            sb.AppendLine("Listing bound commands: ");
+
+            foreach (var command in commands)
+            {
+                sb.AppendLine($"{command.bindingName}: \"{command.Command}\"");
+            }
+
+            return sb.ToString();
         }
 
         public string AddBinding(List<string> args)
@@ -29,7 +50,7 @@ namespace HaEPluginCore.Console
             if (args.Count < 5)
                 return "not enough arugmens!";
 
-            List<BoundCommand> commands = ((Configuration)configurationWriter.Configuration).BoundCommands;
+            List<BoundCommand> commands = configurationWriter.BoundCommands;
             BoundCommand boundCommand = new BoundCommand();
 
             boundCommand.bindingName = args[0];
@@ -52,12 +73,13 @@ namespace HaEPluginCore.Console
 
             commands.Add(boundCommand);
             BindFromBoundCommand(boundCommand);
+            Save();
             return "Binding Added!";
         }
 
         public string RemoveBound(List<string> bindingName)
         {
-            List<BoundCommand> commands = ((Configuration)configurationWriter.Configuration).BoundCommands;
+            List<BoundCommand> commands = configurationWriter.BoundCommands;
 
             for (int i = 0; i < commands.Count; i++)
             {
@@ -74,29 +96,31 @@ namespace HaEPluginCore.Console
 
         public void Save()
         {
-            HaEPluginConfigurationHandler.Serialize(configurationWriter);
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream($"{StoragePath}\\{configurationWriter.fileName}",
+                                     FileMode.Create,
+                                     FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, configurationWriter);
+            stream.Close();
         }
 
-
-        public class WriteConfig : HaEPluginConfigurationHandler.IHaESerializable
-        {
-            public string fileName { get; set; }
-
-            public object Configuration { get; set; }
-
-            public WriteConfig(object Configuration, string fileName)
-            {
-                this.fileName = fileName;
-                this.Configuration = Configuration;
-            }
-        }
 
         public void DeSerialize()
         {
-            HaEPluginConfigurationHandler.AddSerializable(configurationWriter);
-            HaEPluginConfigurationHandler.DeSerialize(configurationWriter);
+            try
+            {
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream($"{StoragePath}\\{configurationWriter.fileName}",
+                                            FileMode.Open,
+                                            FileAccess.Read, FileShare.Read);
+                configurationWriter = (WriteConfig)formatter.Deserialize(stream);
+                stream.Close();
+            } catch (FileNotFoundException e)
+            {
+                //nom
+            }
 
-            foreach (var command in ((Configuration)configurationWriter.Configuration).BoundCommands)
+            foreach (var command in configurationWriter.BoundCommands)
             {
                 BindFromBoundCommand(command);
             }
@@ -104,16 +128,23 @@ namespace HaEPluginCore.Console
 
         public void BindFromBoundCommand(BoundCommand command)
         {
-            HaEInputHandler.HaEKeyCombination keyCombination = new HaEInputHandler.HaEKeyCombination(command._key, command._modifier, command._modifier2, command.Execute);
+            HaEInputHandler.HaEKeyCombination keyCombination = new HaEInputHandler.HaEKeyCombination(command._key, command._modifier, command._modifier2, HaEConstants.quarterSecTimeOut, command.Execute);
             HaEPluginCore.HaEInputHandler.AddCombination(keyCombination);
 
             command.keyCombo = keyCombination;
         }
 
         [Serializable]
-        public class Configuration
+        public class WriteConfig
         {
+            public string fileName { get; set; }
+
             public List<BoundCommand> BoundCommands = new List<BoundCommand>();
+
+            public WriteConfig(string fileName)
+            {
+                this.fileName = fileName;
+            }
         }
 
         [Serializable]
@@ -126,11 +157,12 @@ namespace HaEPluginCore.Console
             public MyKeys _modifier;
             public MyKeys _modifier2;
 
+            [NonSerialized]
             public HaEInputHandler.HaEKeyCombination keyCombo;
 
             public void Execute()
             {
-                HaEConsole.Instance.HandleCommand(Command);
+                HaEConsole.Instance.ParseCommand(Command);
             }
         }
 
