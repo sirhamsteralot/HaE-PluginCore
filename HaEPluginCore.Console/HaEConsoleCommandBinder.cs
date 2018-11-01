@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
@@ -18,7 +20,7 @@ namespace HaEPluginCore.Console
 
         public HaEConsoleCommandBinder()
         {
-            configurationWriter = new WriteConfig("HaEConsoleCommandBinderConfig.bin");
+            configurationWriter = new WriteConfig("HaEConsoleBinder.cfg");
             DeSerialize();
             RegisterCommands();
         }
@@ -96,12 +98,12 @@ namespace HaEPluginCore.Console
 
         public void Save()
         {
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream($"{StoragePath}\\{configurationWriter.fileName}",
-                                     FileMode.Create,
-                                     FileAccess.Write, FileShare.None);
-            formatter.Serialize(stream, configurationWriter);
-            stream.Close();
+            using (var writer = new StreamWriter($"{StoragePath}\\{configurationWriter.fileName}"))
+            {
+                var x = new XmlSerializer(typeof(WriteConfig));
+                x.Serialize(writer, configurationWriter);
+                writer.Close();
+            }
         }
 
 
@@ -109,12 +111,12 @@ namespace HaEPluginCore.Console
         {
             try
             {
-                IFormatter formatter = new BinaryFormatter();
-                Stream stream = new FileStream($"{StoragePath}\\{configurationWriter.fileName}",
-                                            FileMode.Open,
-                                            FileAccess.Read, FileShare.Read);
-                configurationWriter = (WriteConfig)formatter.Deserialize(stream);
-                stream.Close();
+                using (var writer = new StreamReader($"{StoragePath}\\{configurationWriter.fileName}"))
+                {
+                    var x = new XmlSerializer(typeof(WriteConfig));
+                    configurationWriter = (WriteConfig)x.Deserialize(writer);
+                    writer.Close();
+                }
             } catch (FileNotFoundException e)
             {
                 //nom
@@ -137,9 +139,14 @@ namespace HaEPluginCore.Console
         [Serializable]
         public class WriteConfig
         {
+            [XmlIgnore]
             public string fileName { get; set; }
 
             public List<BoundCommand> BoundCommands = new List<BoundCommand>();
+
+            public WriteConfig()
+            {
+            }
 
             public WriteConfig(string fileName)
             {
@@ -157,7 +164,11 @@ namespace HaEPluginCore.Console
             public MyKeys _modifier;
             public MyKeys _modifier2;
 
-            [NonSerialized]
+            public BoundCommand()
+            {
+            }
+
+            [XmlIgnore]
             public HaEInputHandler.HaEKeyCombination keyCombo;
 
             public void Execute()
