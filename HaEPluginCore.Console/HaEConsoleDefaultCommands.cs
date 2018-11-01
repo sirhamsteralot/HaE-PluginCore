@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Scripting;
 using VRage;
 using VRage.Steam;
+using VRageMath;
+using Sandbox;
+using Sandbox.Engine;
+using Sandbox.Engine.Platform;
+using Sandbox.Engine.Platform.VideoMode;
+using Sandbox.Engine.Utils;
 using Sandbox.Game.Gui;
 using Sandbox.Game.GUI;
 using Sandbox.Graphics.GUI;
 using Sandbox.Gui;
+using SpaceEngineers.Game;
+using SpaceEngineers.Game.GUI;
 using System.Reflection;
+
 
 namespace HaEPluginCore.Console
 {
@@ -29,7 +38,23 @@ namespace HaEPluginCore.Console
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenCompContainer", "Opens a competitive container", (List<string> x) => { MySteamService.Static.TriggerCompetitiveContainer(); return $"Crate opened!"; }));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Eval", "Runs C# script", HandleAsync));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("RemoveBlockInfo", "Toggles block info", RemoveBlockInfo));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("ChangeFOV", "Changes the FOV, Usage: ChangeFOV {Value}", ChangeFOV));
+        }
 
+        public static string ChangeFOV(List<string> arg)
+        {
+            float fovSetting;
+
+            if (float.TryParse(arg[0], out fovSetting))
+            {
+                var currentsettings = MyVideoSettingsManager.CurrentGraphicsSettings;
+                currentsettings.FieldOfView = MathHelper.ToRadians(fovSetting);
+                MyVideoSettingsManager.Apply(currentsettings);
+                MyVideoSettingsManager.SaveCurrentSettings();
+                return $"Set FOV to: {fovSetting}";
+            }
+
+            return "Invalid input!";
         }
 
         public static string RemoveBlockInfo(List<string> arg)

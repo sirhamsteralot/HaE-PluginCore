@@ -21,7 +21,6 @@ namespace HaEPluginCore
                 MySandboxGame.Config.ShowCrosshair = !MySandboxGame.Config.ShowCrosshair;
             });
             HaEPluginCore.HaEInputHandler.AddCombination(showCrossHair);
-            
         }
     }
 }
