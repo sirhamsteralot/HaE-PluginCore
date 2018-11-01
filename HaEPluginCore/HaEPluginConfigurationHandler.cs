@@ -25,6 +25,11 @@ namespace HaEPluginCore
             object Configuration { get; set; }
         }
 
+        public static void AddSerializable(IHaESerializable serializable)
+        {
+            serializables.Add(serializable);
+        }
+
         public static void Serialize()
         {
             foreach (var serializable in serializables)
