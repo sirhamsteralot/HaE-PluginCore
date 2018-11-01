@@ -198,6 +198,7 @@
   <ItemGroup>
     <Compile Include="HaEConsole.cs" />
     <Compile Include="HaEConsoleCommand.cs" />
+    <Compile Include="HaEConsoleCommandBinder.cs" />
     <Compile Include="HaEConsoleDefaultCommands.cs" />
     <Compile Include="HaEConsoleScreen.cs" />
     <Compile Include="HaEConsoleScreen_Handlers.cs" />
