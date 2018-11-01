@@ -46,6 +46,7 @@ namespace HaEPluginCore
 
         public void Dispose()
         {
+            HaEPluginConfigurationHandler.Serialize();
             OnDispose?.Invoke();
         }
     }
