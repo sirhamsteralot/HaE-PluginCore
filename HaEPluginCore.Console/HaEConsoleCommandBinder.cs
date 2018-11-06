@@ -16,7 +16,8 @@ namespace HaEPluginCore.Console
     public class HaEConsoleCommandBinder
     {
         public static WriteConfig configurationWriter;
-        public static string StoragePath => Path.GetDirectoryName(typeof(HaEConsoleCommandBinder).Assembly.Location);
+        public static string PluginPath => Path.GetDirectoryName(typeof(HaEConsoleCommandBinder).Assembly.Location);
+        public static string StorageFolder = "Config";
 
         public HaEConsoleCommandBinder()
         {
@@ -98,7 +99,10 @@ namespace HaEPluginCore.Console
 
         public void Save()
         {
-            using (var writer = new StreamWriter($"{StoragePath}\\{configurationWriter.fileName}"))
+            if (!Directory.Exists($"{PluginPath}\\{StorageFolder}\\{configurationWriter.fileName}"))
+                Directory.CreateDirectory($"{PluginPath}\\{StorageFolder}\\{configurationWriter.fileName}");
+
+            using (var writer = new StreamWriter($"{PluginPath}\\{configurationWriter.fileName}"))
             {
                 var x = new XmlSerializer(typeof(WriteConfig));
                 x.Serialize(writer, configurationWriter);
@@ -111,7 +115,7 @@ namespace HaEPluginCore.Console
         {
             try
             {
-                using (var writer = new StreamReader($"{StoragePath}\\{configurationWriter.fileName}"))
+                using (var writer = new StreamReader($"{PluginPath}\\{configurationWriter.fileName}"))
                 {
                     var x = new XmlSerializer(typeof(WriteConfig));
                     configurationWriter = (WriteConfig)x.Deserialize(writer);
