@@ -19,7 +19,7 @@ namespace HaEPluginCore.Console
 
         public HaEConsoleCommandBinder()
         {
-            configurationWriter = new WriteConfig("HaEConsoleBinder.cfg");
+            configurationWriter = new WriteConfig();
             DeSerialize();
             RegisterCommands();
         }
@@ -97,10 +97,10 @@ namespace HaEPluginCore.Console
 
         public void Save()
         {
-            if (!Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.StorageFolder}\\{configurationWriter.fileName}"))
-                Directory.CreateDirectory($"{HaEConstants.pluginFolder}\\{HaEConstants.StorageFolder}\\{configurationWriter.fileName}");
+            if (!Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.StorageFolder}"))
+                Directory.CreateDirectory($"{HaEConstants.pluginFolder}\\{HaEConstants.StorageFolder}");
 
-            using (var writer = new StreamWriter($"{HaEConstants.pluginFolder}\\{HaEConstants.StorageFolder}"))
+            using (var writer = new StreamWriter($"{HaEConstants.pluginFolder}\\{HaEConstants.StorageFolder}\\{configurationWriter.fileName}"))
             {
                 var x = new XmlSerializer(typeof(WriteConfig));
                 x.Serialize(writer, configurationWriter);
@@ -146,17 +146,12 @@ namespace HaEPluginCore.Console
         public class WriteConfig
         {
             [XmlIgnore]
-            public string fileName { get; set; }
+            public string fileName => "HaEConsoleBinder.cfg";
 
             public List<BoundCommand> BoundCommands = new List<BoundCommand>();
 
             public WriteConfig()
             {
-            }
-
-            public WriteConfig(string fileName)
-            {
-                this.fileName = fileName;
             }
         }
 
