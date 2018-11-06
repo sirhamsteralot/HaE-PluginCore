@@ -111,7 +111,7 @@ namespace HaEPluginCore.Console
 
         public void DeSerialize()
         {
-            if (Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.StorageFolder}\\{configurationWriter.fileName}"))
+            if (Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.StorageFolder}"))
             {
                 try
                 {
