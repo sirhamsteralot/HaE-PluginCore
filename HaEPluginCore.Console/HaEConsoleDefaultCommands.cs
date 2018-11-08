@@ -46,7 +46,7 @@ namespace HaEPluginCore.Console
         public static string ChangeFOV(List<string> arg)
         {
             if (arg.Count < 1)
-                return "not enough arugmens!";
+                return "not enough arguments!";
 
             float fovSetting;
 
@@ -78,7 +78,7 @@ namespace HaEPluginCore.Console
         public static string ExecuteScript(List<string> args)
         {
             if (args.Count < 1)
-                return "not enough arugmens!";
+                return "not enough arguments!";
 
             if (Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.ScriptFolder}"))
             {
