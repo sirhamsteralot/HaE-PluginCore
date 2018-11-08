@@ -27,6 +27,7 @@ namespace HaEPluginCore
                     if (keyCombinations[i].Equals(keyCombination))
                     {
                         keyCombinations.RemoveAtFast(i);
+                        return;
                     }
                 }
             }

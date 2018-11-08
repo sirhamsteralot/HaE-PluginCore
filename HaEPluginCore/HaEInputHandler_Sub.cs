@@ -20,6 +20,7 @@ namespace HaEPluginCore
             private readonly Action _callback;
 
             private DateTime _lastPressed;
+            private bool _active = true;
 
             public HaEKeyCombination(MyKeys key, MyKeys modifier, MyKeys modifier2, TimeSpan timeOut, Action callback)
             {
@@ -43,6 +44,9 @@ namespace HaEPluginCore
 
             public void CheckCombinationPressed()
             {
+                if (!_active)
+                    return;
+
                 if ((MyInput.Static.IsKeyPress(_key) && 
                    (MyInput.Static.IsKeyPress(_modifier) || _modifier == MyKeys.None) && 
                    (MyInput.Static.IsKeyPress(_modifier2) || _modifier2 == MyKeys.None)) &&
@@ -52,6 +56,11 @@ namespace HaEPluginCore
 
                     _callback?.Invoke();
                 }
+            }
+
+            public void SetActive(bool val)
+            {
+                _active = val;
             }
 
             public bool Equals(HaEKeyCombination other)
