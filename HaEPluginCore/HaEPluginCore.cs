@@ -27,7 +27,7 @@ namespace HaEPluginCore
         public void Init(object gameInstance)
         {
             HaEAssemblyResolver.ResolveAssembliesIn(new DirectoryInfo(Path.GetDirectoryName(typeof(HaEPluginCore).Assembly.Location)));
-
+            CreateDirectories();
 
             instance = (MySandboxGame)gameInstance;
             HaEInputHandler = new HaEInputHandler();
@@ -35,6 +35,15 @@ namespace HaEPluginCore
 
             HaEDefaultBindings.BindKeys();
             OnInit?.Invoke();
+        } 
+
+        public void CreateDirectories()
+        {
+            if (!Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.StorageFolder}"))
+                Directory.CreateDirectory($"{HaEConstants.pluginFolder}\\{HaEConstants.StorageFolder}");
+
+            if (!Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.ScriptFolder}"))
+                Directory.CreateDirectory($"{HaEConstants.pluginFolder}\\{HaEConstants.ScriptFolder}");
         }
 
         public void Update()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using Microsoft.CodeAnalysis.Scripting;
 using VRage;
 using VRage.Steam;
@@ -37,6 +38,7 @@ namespace HaEPluginCore.Console
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenContainer", "Opens a competitive container", (List<string> x) => { MySteamService.Static.TriggerPersonalContainer(); return "Crate opened!"; }));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("OpenCompContainer", "Opens a competitive container", (List<string> x) => { MySteamService.Static.TriggerCompetitiveContainer(); return $"Crate opened!"; }));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Eval", "Runs C# script", HandleAsync));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Exec", "Runs C# script from Script directory in plugins folder, Usage: Exec {filename}", ExecuteScript));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("RemoveBlockInfo", "Removes block info", RemoveBlockInfo));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("ChangeFOV", "Changes FOV, usage: ChangeFOV {fov}", ChangeFOV));
         }
@@ -71,6 +73,29 @@ namespace HaEPluginCore.Console
             control.Alpha = 0;
 
             return $"Removed!";
+        }
+
+        public static string ExecuteScript(List<string> args)
+        {
+            if (args.Count < 1)
+                return "not enough arugmens!";
+
+            if (Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.ScriptFolder}"))
+            {
+                try
+                {
+                    using (var reader = new StreamReader($"{HaEConstants.pluginFolder}\\{HaEConstants.ScriptFolder}\\{args[0]}"))
+                    {
+                        return HandleAsync(reader.ReadToEnd());
+                    }
+                }
+                catch (FileNotFoundException e)
+                {
+                    return $"Could not find script to run: {args[0]}";
+                }
+            }
+
+            return "ScriptDirectory was not found!";
         }
 
         public static string HandleAsync(string arg)
