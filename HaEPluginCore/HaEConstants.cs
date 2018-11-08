@@ -11,8 +11,8 @@ namespace HaEPluginCore
     {
         public const float screenScaleConstant = 1.33333337f;
         public static string pluginFolder => Path.GetDirectoryName(typeof(HaEConstants).Assembly.Location);
-        public static string StorageFolder = "Config";
-        public static string ScriptFolder = "Scripts";
+        public const string StorageFolder = "Config";
+        public const string ScriptFolder = "Scripts";
 
         public static TimeSpan quarterSecTimeOut = TimeSpan.FromMilliseconds(250);
     }
