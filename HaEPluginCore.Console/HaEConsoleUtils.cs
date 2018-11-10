@@ -52,7 +52,7 @@ namespace HaEPluginCore.Console
 
             private static IEnumerable<Assembly> SelectAssemblies()
             {
-                return AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic).Where(a => !string.IsNullOrWhiteSpace(a.Location));
+                return AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic && !string.IsNullOrWhiteSpace(a.Location));
             }
         }
     }
