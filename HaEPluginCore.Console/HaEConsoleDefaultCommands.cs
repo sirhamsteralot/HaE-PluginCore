@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.CodeAnalysis.Scripting;
 using VRage;
+using VRage.Game;
+using VRage.GameServices;
 using VRage.Steam;
+using VRage.Utils;
 using VRageMath;
 using Sandbox;
 using Sandbox.Engine;
+using Sandbox.Engine.Networking;
 using Sandbox.Engine.Platform;
 using Sandbox.Engine.Platform.VideoMode;
 using Sandbox.Engine.Utils;
+using Sandbox.Game;
+using Sandbox.Game.World;
 using Sandbox.Game.Gui;
 using Sandbox.Game.GUI;
 using Sandbox.Graphics.GUI;
@@ -41,6 +48,7 @@ namespace HaEPluginCore.Console
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Exec", "Runs C# script from Script directory in plugins folder, Usage: Exec {filename}", ExecuteScript));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("RemoveBlockInfo", "Removes block info", RemoveBlockInfo));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("ChangeFOV", "Changes FOV, usage: ChangeFOV {fov}", ChangeFOV));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Connect", "Direct Connects to IP, usage: Connect {ip}", ChangeFOV));
         }
 
         public static string ChangeFOV(List<string> arg)
@@ -115,6 +123,72 @@ namespace HaEPluginCore.Console
                         $"{ex.Message}";
             }
         }
+
+        #region Connect
+        private static MyGuiScreenProgress m_progressScreen;
+        public static string Connect(List<string> args)
+        {
+            if (args.Count < 1)
+                return "Not enough arguments!";
+
+            try
+            {
+                string[] array = args[0].Trim().Split(new char[]
+                {
+                    ':'
+                });
+                ushort num;
+                if (array.Length < 2)
+                {
+                    num = 27016;
+                }
+                else
+                {
+                    num = ushort.Parse(array[1]);
+                }
+                IPAddress[] hostAddresses = Dns.GetHostAddresses(array[0]);
+
+                StringBuilder text = MyTexts.Get(MyCommonTexts.DialogTextJoiningWorld);
+                m_progressScreen = new MyGuiScreenProgress(text, new MyStringId?(MyCommonTexts.Cancel), false, true);
+                MyGuiSandbox.AddScreen(m_progressScreen);
+                m_progressScreen.ProgressCancelled += delegate
+                {
+                    CloseHandlers();
+                    MySessionLoader.UnloadAndExitToMenu();
+                };
+                MyGameService.OnPingServerResponded += new EventHandler<MyGameServerItem>(ServerResponded);
+                MyGameService.OnPingServerFailedToRespond += new EventHandler(ServerFailedToRespond);
+                MyGameService.PingServer(hostAddresses[0].ToIPv4NetworkOrder(), num);
+
+                MyGameService.OnPingServerResponded += new EventHandler<MyGameServerItem>(ServerResponded);
+                MyGameService.OnPingServerFailedToRespond += new EventHandler(ServerFailedToRespond);
+                MyGameService.PingServer(hostAddresses[0].ToIPv4NetworkOrder(), num);
+            }
+            catch (Exception ex)
+            {
+                MyGuiSandbox.Show(MyTexts.Get(MyCommonTexts.MultiplayerJoinIPError), MyCommonTexts.MessageBoxCaptionError, MyMessageBoxStyleEnum.Error);
+            }
+
+            return "Attempting to join server: ";
+        }
+        private static void ServerResponded(object sender, MyGameServerItem serverItem)
+        {
+            CloseHandlers();
+            m_progressScreen.CloseScreen();
+            MyJoinGameHelper.JoinGame(serverItem, true);
+        }
+        private static void ServerFailedToRespond(object sender, object e)
+        {
+            CloseHandlers();
+            m_progressScreen.CloseScreen();
+            MyGuiSandbox.Show(MyCommonTexts.MultiplaterJoin_ServerIsNotResponding, default(MyStringId), MyMessageBoxStyleEnum.Error);
+        }
+        private static void CloseHandlers()
+        {
+            MyGameService.OnPingServerResponded -= new EventHandler<MyGameServerItem>(ServerResponded);
+            MyGameService.OnPingServerFailedToRespond -= new EventHandler(ServerFailedToRespond);
+        }
+        #endregion
 
         public static string HelloWorld(List<string> args)
         {
