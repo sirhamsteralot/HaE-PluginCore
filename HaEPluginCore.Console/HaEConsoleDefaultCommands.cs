@@ -48,7 +48,7 @@ namespace HaEPluginCore.Console
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Exec", "Runs C# script from Script directory in plugins folder, Usage: Exec {filename}", ExecuteScript));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("RemoveBlockInfo", "Removes block info", RemoveBlockInfo));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("ChangeFOV", "Changes FOV, usage: ChangeFOV {fov}", ChangeFOV));
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Connect", "Direct Connects to IP, usage: Connect {ip}", ChangeFOV));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Connect", "Direct Connects to IP, usage: Connect {ip}", Connect));
         }
 
         public static string ChangeFOV(List<string> arg)
