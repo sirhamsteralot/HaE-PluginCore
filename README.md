@@ -1,4 +1,4 @@
-Welcome to the HaE-PluginCore wiki!
+# Welcome to the HaE-PluginCore git!
 
 Check out the how to install here:
 [link](https://github.com/sirhamsteralot/HaE-PluginCore/wiki/Installation)
