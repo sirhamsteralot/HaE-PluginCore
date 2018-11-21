@@ -46,6 +46,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Sandbox.Common">
@@ -133,6 +134,7 @@
     <Compile Include="HaEAssemblyResolver.cs" />
     <Compile Include="HaEConstants.cs" />
     <Compile Include="HaEDefaultBindings.cs" />
+    <Compile Include="HaEILInjector.cs" />
     <Compile Include="HaEInputHandler.cs" />
     <Compile Include="HaEInputHandler_Sub.cs" />
     <Compile Include="HaEPluginCore.cs" />
