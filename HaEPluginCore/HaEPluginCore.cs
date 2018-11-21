@@ -44,6 +44,9 @@ namespace HaEPluginCore
 
             if (!Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.ScriptFolder}"))
                 Directory.CreateDirectory($"{HaEConstants.pluginFolder}\\{HaEConstants.ScriptFolder}");
+
+            if (!Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.AssetFolder}"))
+                Directory.CreateDirectory($"{HaEConstants.pluginFolder}\\{HaEConstants.AssetFolder}");
         }
 
         public void Update()

@@ -9,10 +9,13 @@ namespace HaEPluginCore
 {
     public static class HaEConstants
     {
+        public const int versionNumber = 1041;  //1.0.4.1
+
         public const float screenScaleConstant = 1.33333337f;
         public static string pluginFolder => Path.GetDirectoryName(typeof(HaEConstants).Assembly.Location);
         public const string StorageFolder = "Config";
         public const string ScriptFolder = "Scripts";
+        public const string AssetFolder = "Assets";
 
         public static TimeSpan quarterSecTimeOut = TimeSpan.FromMilliseconds(250);
     }
