@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace HaEPluginCore
 {
-    public class HaEILInjector
+    public class HaEPatcher
     {
         public static void Replace<T1,T2>(int funcNum, string targetMethod, string injectionMethod)
         {
