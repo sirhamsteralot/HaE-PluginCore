@@ -10,10 +10,8 @@ namespace HaEPluginCore
 {
     public class HaEPatcher
     {
-        public static void Replace<T1,T2>(int funcNum, string targetMethod, string injectionMethod)
+        public static void Replace<T1,T2>(int funcNum, MethodInfo methodToReplace, MethodInfo methodToInject)
         {
-            MethodInfo methodToReplace = typeof(T1).GetMethod(targetMethod + funcNum, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
-            MethodInfo methodToInject = typeof(T2).GetMethod(injectionMethod + funcNum, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             RuntimeHelpers.PrepareMethod(methodToReplace.MethodHandle);
             RuntimeHelpers.PrepareMethod(methodToInject.MethodHandle);
 
