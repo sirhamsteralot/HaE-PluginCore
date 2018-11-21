@@ -42,6 +42,11 @@ namespace HaEPluginCore.Console
             HaEConsoleDefaultCommands.RegisterCommands();
         }
 
+        public static void WriteLine(string line)
+        {
+            Instance.displayScreen.Append(line).AppendLine();
+        }
+
         public void RegisterCommand(HaEConsoleCommand command)
         {
             commands.Add(command.Command, command);
