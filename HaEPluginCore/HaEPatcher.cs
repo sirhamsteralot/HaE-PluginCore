@@ -10,7 +10,7 @@ namespace HaEPluginCore
 {
     public class HaEPatcher
     {
-        public static void ReplaceMethod<T1,T2>(int funcNum, MethodInfo methodToReplace, MethodInfo methodToInject)
+        public static void ReplaceMethod<T1,T2>(MethodInfo methodToReplace, MethodInfo methodToInject)
         {
             RuntimeHelpers.PrepareMethod(methodToReplace.MethodHandle);
             RuntimeHelpers.PrepareMethod(methodToInject.MethodHandle);
