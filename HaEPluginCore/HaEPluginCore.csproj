@@ -49,6 +49,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net45\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Sandbox.Common">
       <HintPath>..\..\..\..\Programs\steam\steamapps\common\SpaceEngineers\Bin64\Sandbox.Common.dll</HintPath>
     </Reference>
@@ -134,11 +137,13 @@
     <Compile Include="HaEAssemblyResolver.cs" />
     <Compile Include="HaEConstants.cs" />
     <Compile Include="HaEDefaultBindings.cs" />
-    <Compile Include="HaEPatcher.cs" />
     <Compile Include="HaEInputHandler.cs" />
     <Compile Include="HaEInputHandler_Sub.cs" />
     <Compile Include="HaEPluginCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
