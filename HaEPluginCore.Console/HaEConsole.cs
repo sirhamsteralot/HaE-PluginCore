@@ -63,6 +63,7 @@ namespace HaEPluginCore.Console
                 _position = _position.Next;
             }
 
+            _displayScreen.AppendLine(command);
             _displayScreen.Append(HandleCommand(command)).AppendLine();
         }
 
@@ -71,7 +72,6 @@ namespace HaEPluginCore.Console
             List<string> split = HaEConsoleUtils.SplitArgs(command);
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(command);
 
             if (split.Count <= 0)
             {
