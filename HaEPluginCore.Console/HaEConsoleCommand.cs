@@ -13,6 +13,7 @@ namespace HaEPluginCore.Console
         public Func<List<string>, string> Action;
         public Func<string, string> FullArgAction;
         public bool RequireFullArg;
+        public bool hidden;
 
         public HaEConsoleCommand(string command, string description, Func<List<string>, string> action)
         {

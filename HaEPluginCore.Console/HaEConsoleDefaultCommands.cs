@@ -219,7 +219,8 @@ namespace HaEPluginCore.Console
             sb.AppendLine("for more details use ``Help {command}``");
             foreach (var command in HaEConsole.Instance.commands.Values)
             {
-                sb.AppendLine(command.Command);
+                if (!command.hidden)
+                    sb.AppendLine(command.Command);
             }
 
             return sb.ToString();
