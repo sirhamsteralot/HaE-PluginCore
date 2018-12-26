@@ -116,11 +116,13 @@ namespace HaEPluginCore.Console
                     {
                         HaEPluginCore.HaEInputHandler.RemoveCombination(commands[i].keyCombo);
                         commands.RemoveAtFast(i);
+                        Save();
                         return "Removed Binding!";
                     } else
                     {
                         HaEConsole.Instance.UnregisterCommand(commands[i].bindingName);
                         commands.RemoveAtFast(i);
+                        Save();
                         return "Removed Alias!";
                     }
                 }
