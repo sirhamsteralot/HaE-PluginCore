@@ -49,7 +49,19 @@ namespace HaEPluginCore.Console
 
         public void RegisterCommand(HaEConsoleCommand command)
         {
-            commands.Add(command.Command, command);
+            if (!commands.ContainsKey(command.Command))
+                commands.Add(command.Command, command);
+        }
+
+        public void UnregisterCommand(HaEConsoleCommand command)
+        {
+            if (commands.ContainsKey(command.Command))
+                commands.Remove(command.Command);
+        }
+        public void UnregisterCommand(string command)
+        {
+            if (commands.ContainsKey(command))
+                commands.Remove(command);
         }
 
         public void ParseCommand(string command)

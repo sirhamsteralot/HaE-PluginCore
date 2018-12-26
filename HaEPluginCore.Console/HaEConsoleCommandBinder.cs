@@ -112,9 +112,17 @@ namespace HaEPluginCore.Console
             {
                 if (commands[i].bindingName.Equals(bindingName[0]))
                 {
-                    HaEPluginCore.HaEInputHandler.RemoveCombination(commands[i].keyCombo);
-                    commands.RemoveAtFast(i);
-                    return "Removed Binding!";
+                    if (commands[i].shortKey)
+                    {
+                        HaEPluginCore.HaEInputHandler.RemoveCombination(commands[i].keyCombo);
+                        commands.RemoveAtFast(i);
+                        return "Removed Binding!";
+                    } else
+                    {
+                        HaEConsole.Instance.UnregisterCommand(commands[i].bindingName);
+                        commands.RemoveAtFast(i);
+                        return "Removed Alias!";
+                    }
                 }
             }
 
