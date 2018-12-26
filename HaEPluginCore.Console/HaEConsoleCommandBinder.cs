@@ -181,6 +181,7 @@ namespace HaEPluginCore.Console
             } else
             {
                 HaEConsoleCommand consoleCommand = new HaEConsoleCommand(command.bindingName, x => { command.Execute(); return ""; });
+                consoleCommand.hidden = true;
                 HaEConsole.Instance.RegisterCommand(consoleCommand);
             }
         }
