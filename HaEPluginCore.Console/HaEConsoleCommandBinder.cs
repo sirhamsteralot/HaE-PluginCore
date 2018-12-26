@@ -164,8 +164,7 @@ namespace HaEPluginCore.Console
 
             foreach (var command in configurationWriter.BoundCommands)
             {
-                if (command.shortKey)
-                    BindFromBoundCommand(command);
+                BindFromBoundCommand(command);
             }
         }
 
