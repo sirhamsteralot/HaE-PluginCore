@@ -26,6 +26,7 @@ namespace HaEPluginCore.Console
 
         public void RegisterCommands()
         {
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Alias", "Binds Console Command to an alias name, Usage: AddBinding {name} \"{command}\"", Alias));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("AddBinding", "Binds Console Command to key, Usage: AddBinding {name} {key} {modifier} {modifier2} \"{command}\"", AddBinding));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("RemoveBinding", "Unbinds Console Command from key", RemoveBound));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("ListBound", "Lists all bound commands", ListBound));
@@ -40,22 +41,44 @@ namespace HaEPluginCore.Console
 
             foreach (var command in commands)
             {
-                sb.AppendLine($"{command.bindingName}: \"{command.Command}\" {command.key}+{command.modifier}+{command.modifier2}");
+                if (command.shortKey)
+                    sb.AppendLine($"ShortKey: {command.bindingName}: \"{command.Command}\" {command.key}+{command.modifier}+{command.modifier2}");
+                else
+                    sb.AppendLine($"Alias: {command.bindingName}: \"{command.Command}\"");
             }
 
             return sb.ToString();
         }
 
+        public string Alias(List<string> args)
+        {
+            if (args.Count < 2)
+                return "not enough arguments!";
+
+            List<BoundCommand> commands = configurationWriter.BoundCommands;
+            BoundCommand boundCommand = new BoundCommand();
+
+            boundCommand.bindingName = args[0];
+            boundCommand.Command = args[1];
+            boundCommand.shortKey = false;
+
+            commands.Add(boundCommand);
+            BindFromBoundCommand(boundCommand);
+            Save();
+            return "Alias Added!";
+        }
+
         public string AddBinding(List<string> args)
         {
             if (args.Count < 5)
-                return "not enough arugmens!";
+                return "not enough arguments!";
 
             List<BoundCommand> commands = configurationWriter.BoundCommands;
             BoundCommand boundCommand = new BoundCommand();
 
             boundCommand.bindingName = args[0];
             boundCommand.Command = args[4];
+            boundCommand.shortKey = true;
 
             MyKeys key;
             if (!Enum.TryParse(args[1], out key))
@@ -80,6 +103,9 @@ namespace HaEPluginCore.Console
 
         public string RemoveBound(List<string> bindingName)
         {
+            if (bindingName.Count < 1)
+                return "not enough arguments!";
+
             List<BoundCommand> commands = configurationWriter.BoundCommands;
 
             for (int i = 0; i < commands.Count; i++)
@@ -130,16 +156,24 @@ namespace HaEPluginCore.Console
 
             foreach (var command in configurationWriter.BoundCommands)
             {
-                BindFromBoundCommand(command);
+                if (command.shortKey)
+                    BindFromBoundCommand(command);
             }
         }
 
         public void BindFromBoundCommand(BoundCommand command)
         {
-            HaEInputHandler.HaEKeyCombination keyCombination = new HaEInputHandler.HaEKeyCombination(command.key, command.modifier, command.modifier2, HaEConstants.quarterSecTimeOut, command.Execute);
-            HaEPluginCore.HaEInputHandler.AddCombination(keyCombination);
+            if (command.shortKey)
+            {
+                HaEInputHandler.HaEKeyCombination keyCombination = new HaEInputHandler.HaEKeyCombination(command.key, command.modifier, command.modifier2, HaEConstants.quarterSecTimeOut, command.Execute);
+                HaEPluginCore.HaEInputHandler.AddCombination(keyCombination);
 
-            command.keyCombo = keyCombination;
+                command.keyCombo = keyCombination;
+            } else
+            {
+                HaEConsoleCommand consoleCommand = new HaEConsoleCommand(command.bindingName, x => { command.Execute(); return ""; });
+                HaEConsole.Instance.RegisterCommand(consoleCommand);
+            }
         }
 
         [Serializable]
@@ -164,6 +198,8 @@ namespace HaEPluginCore.Console
             public MyKeys key;
             public MyKeys modifier;
             public MyKeys modifier2;
+
+            public bool shortKey;
 
             public BoundCommand()
             {
