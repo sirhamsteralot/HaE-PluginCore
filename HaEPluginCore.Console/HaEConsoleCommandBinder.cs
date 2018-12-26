@@ -180,7 +180,7 @@ namespace HaEPluginCore.Console
                 command.keyCombo = keyCombination;
             } else
             {
-                HaEConsoleCommand consoleCommand = new HaEConsoleCommand(command.bindingName, x => { command.Execute(); return ""; });
+                HaEConsoleCommand consoleCommand = new HaEConsoleCommand(command.bindingName, x => { command.Execute(x); return ""; });
                 consoleCommand.hidden = true;
                 HaEConsole.Instance.RegisterCommand(consoleCommand);
             }
@@ -221,6 +221,15 @@ namespace HaEPluginCore.Console
             public void Execute()
             {
                 HaEConsole.Instance.ParseCommand(Command);
+            }
+
+            public void Execute(List<string> args)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(Command);
+                foreach (var arg in args)
+                    sb.Append(" " + arg);
+                HaEConsole.Instance.ParseCommand(sb.ToString());
             }
         }
 
