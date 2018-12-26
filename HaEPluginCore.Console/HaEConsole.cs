@@ -106,12 +106,10 @@ namespace HaEPluginCore.Console
                 result = consoleCommand.Action.Invoke(split);
             }
 
-
-            
-            if (result != null)
+            if (!string.IsNullOrEmpty(result))
                 return sb.Append(result);
 
-            return sb.Append($"Error, command returned NULL!");
+            return sb;
         }
 
         public void NextLine()
