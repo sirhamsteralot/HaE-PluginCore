@@ -15,11 +15,11 @@ namespace HaEPluginCore.Console
 {
     public partial class HaEConsoleScreen : MyGuiScreenBase
     {
-        private static HaEConsoleScreen _instance;
+        public static HaEConsoleScreen _instance;
 
-        private static MyGuiControlMultilineText _displayScreen;
-        private static MyGuiControlTextbox _textBox;
-        private static MyGuiControlImage _logo;
+        public static MyGuiControlMultilineText _displayScreen;
+        public static MyGuiControlTextbox _textBox;
+        public static MyGuiControlImage _logo;
 
         private static string BufferText = "";
 

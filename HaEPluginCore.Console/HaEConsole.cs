@@ -45,6 +45,7 @@ namespace HaEPluginCore.Console
         public static void WriteLine(string line)
         {
             Instance.displayScreen.Append(line).AppendLine();
+            HaEConsoleScreen._displayScreen.ScrollToShowCarriage();
         }
 
         public void RegisterCommand(HaEConsoleCommand command)
