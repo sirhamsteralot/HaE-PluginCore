@@ -15,11 +15,11 @@ namespace HaEPluginCore.Console
 {
     public partial class HaEConsoleScreen : MyGuiScreenBase
     {
-        public static HaEConsoleScreen _instance;
+        private static HaEConsoleScreen _instance;
 
-        public static MyGuiControlMultilineText _displayScreen;
-        public static MyGuiControlTextbox _textBox;
-        public static MyGuiControlImage _logo;
+        private static MyGuiControlMultilineText _displayScreen;
+        private static MyGuiControlTextbox _textBox;
+        private static MyGuiControlImage _logo;
 
         private static string BufferText = "";
 
@@ -47,6 +47,7 @@ namespace HaEPluginCore.Console
         {
             _instance = new HaEConsoleScreen();
             _instance.RecreateControls(true);
+            _displayScreen.ScrollbarOffsetV = 1;
             MyGuiSandbox.AddScreen(_instance);
         }
 
