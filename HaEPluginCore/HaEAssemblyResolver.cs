@@ -16,7 +16,7 @@ namespace HaEPluginCore
             EnumerateDirectory(directory);
             foreach (DirectoryInfo d in directory.EnumerateDirectories())
             {
-                EnumerateDirectory(d);
+                ResolveAssembliesIn(d);
             }
             AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
         }
