@@ -26,7 +26,7 @@ namespace HaEPluginCore.Console
 
         public void RegisterCommands()
         {
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Alias", "Binds Console Command to an alias name, Usage: AddBinding {name} \"{command}\"", Alias));
+            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Alias", "Binds Console Command to an alias name, Usage: Alias {name} \"{command}\"", Alias));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("AddBinding", "Binds Console Command to key, Usage: AddBinding {name} {key} {modifier} {modifier2} \"{command}\"", AddBinding));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("RemoveBinding", "Unbinds Console Command from key", RemoveBound));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("ListBound", "Lists all bound commands", ListBound));
