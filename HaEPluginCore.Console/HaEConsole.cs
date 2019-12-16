@@ -97,14 +97,23 @@ namespace HaEPluginCore.Console
 
             split.RemoveAt(0);
             string result = "";
-            if (consoleCommand.RequireFullArg)
+            try
             {
-                string input = command.Substring(key.Length + 1);
-                result = consoleCommand.FullArgAction.Invoke(input);
-            } else
+                if (consoleCommand.RequireFullArg)
+                {
+                    string input = command.Substring(key.Length + 1);
+                    result = consoleCommand.FullArgAction.Invoke(input);
+                }
+                else
+                {
+                    result = consoleCommand.Action.Invoke(split);
+                }
+            } catch (Exception e)
             {
-                result = consoleCommand.Action.Invoke(split);
+                sb.Append("Command exception: ").AppendLine(e.Message);
+                sb.Append(e.StackTrace);
             }
+
 
             if (!string.IsNullOrEmpty(result))
                 return sb.Append(result);
