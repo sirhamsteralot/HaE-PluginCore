@@ -18,7 +18,13 @@ namespace HaEPluginCore
         {
             HaEInputHandler.HaEKeyCombination showCrossHair = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.OemPlus, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, () => {
 
-                MySandboxGame.Config.ShowCrosshair = !MySandboxGame.Config.ShowCrosshair;
+                if ((int)MySandboxGame.Config.ShowCrosshair + 1 < 4)
+                {
+                    MySandboxGame.Config.ShowCrosshair++;
+                } else
+                {
+                    MySandboxGame.Config.ShowCrosshair = 0;
+                }
             });
             HaEPluginCore.HaEInputHandler.AddCombination(showCrossHair);
         }
