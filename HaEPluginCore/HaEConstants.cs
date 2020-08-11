@@ -9,7 +9,7 @@ namespace HaEPluginCore
 {
     public static class HaEConstants
     {
-        public static int versionNumber = 1076;  //1.0.7.6
+        public static int versionNumber = 1078;  //1.0.7.6
 
         public const float screenScaleConstant = 1.33333337f;
         public static string pluginFolder => Path.GetDirectoryName(typeof(HaEConstants).Assembly.Location);
