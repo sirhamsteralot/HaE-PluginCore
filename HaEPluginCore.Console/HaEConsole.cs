@@ -11,8 +11,10 @@ namespace HaEPluginCore.Console
     {
         private static HaEConsole _instance;
         public static HaEConsole Instance => _instance;
+        private static event Action OnPluginReady;
 
-        public static HaEConsoleCommandBinder commandBinder;
+
+        public HaEConsoleCommandBinder CommandBinder;
 
         private StringBuilder _displayScreen;
         public StringBuilder displayScreen => _displayScreen;
@@ -36,10 +38,23 @@ namespace HaEPluginCore.Console
             _commandHistory = new LinkedList<string>();
             commands = new Dictionary<string, HaEConsoleCommand>();
 
-            commandBinder = new HaEConsoleCommandBinder();
+            CommandBinder = new HaEConsoleCommandBinder();
 
             HaEConsoleScreen.RegisterKeys();
             HaEConsoleDefaultCommands.RegisterCommands();
+
+            OnPluginReady?.Invoke();
+        }
+
+        public static void ExecWhenPluginReady(Action action)
+        {
+            if (_instance == null)
+            {
+                OnPluginReady += action;
+                return;
+            }
+
+            action();
         }
 
         public static void WriteLine(string line)
