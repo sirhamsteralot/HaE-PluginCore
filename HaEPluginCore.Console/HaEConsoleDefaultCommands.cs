@@ -5,7 +5,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Microsoft.CodeAnalysis.Scripting;
 using VRage;
 using VRage.Game;
 using VRage.GameServices;
@@ -42,8 +41,6 @@ namespace HaEPluginCore.Console
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Exit", "Exits the game", (List<string> x) => { Environment.Exit(0); return $"Exiting!"; }));
 
             // Utilities
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Eval", "Runs C# script", HandleAsync));
-            HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Exec", "Runs C# script from Script directory in plugins folder, Usage: Exec {filename}", ExecuteScript));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("RemoveBlockInfo", "Removes block info", RemoveBlockInfo));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("ChangeFOV", "Changes FOV, usage: ChangeFOV {fov}", ChangeFOV));
             HaEConsole.Instance.RegisterCommand(new HaEConsoleCommand("Connect", "Direct Connects to IP, usage: Connect {ip}", Connect));
@@ -81,47 +78,6 @@ namespace HaEPluginCore.Console
             return $"Removed!";
         }
 
-        public static string ExecuteScript(List<string> args)
-        {
-            if (args.Count < 1)
-                return "not enough arguments!";
-
-            if (Directory.Exists($"{HaEConstants.pluginFolder}\\{HaEConstants.ScriptFolder}"))
-            {
-                try
-                {
-                    using (var reader = new StreamReader($"{HaEConstants.pluginFolder}\\{HaEConstants.ScriptFolder}\\{args[0]}"))
-                    {
-                        return HandleAsync(reader.ReadToEnd());
-                    }
-                }
-                catch (FileNotFoundException e)
-                {
-                    return $"Could not find script to run: {args[0]}";
-                }
-            }
-
-            return "ScriptDirectory was not found!";
-        }
-
-        public static string HandleAsync(string arg)
-        {
-            return Eval(arg).GetAwaiter().GetResult();
-        }
-        public async static Task<string> Eval(string arg)
-        {
-            try
-            {
-                var result = await HaEConsoleUtils.ScriptManager.ExecuteScript(arg);
-                return result?.ToString();
-
-            } catch (CompilationErrorException ex)
-            {
-                return  $"Error executing script!\n" +
-                        $"{ex.Message}";
-            }
-        }
-
         #region Connect
         private static MyGuiScreenProgress m_progressScreen;
         public static string Connect(List<string> args)
@@ -156,11 +112,11 @@ namespace HaEPluginCore.Console
                 };
                 MyGameService.OnPingServerResponded += new EventHandler<MyGameServerItem>(ServerResponded);
                 MyGameService.OnPingServerFailedToRespond += new EventHandler(ServerFailedToRespond);
-                MyGameService.PingServer(hostAddresses[0].ToIPv4NetworkOrder(), num);
+                MyGameService.PingServer(hostAddresses[0].ToString());
 
                 MyGameService.OnPingServerResponded += new EventHandler<MyGameServerItem>(ServerResponded);
                 MyGameService.OnPingServerFailedToRespond += new EventHandler(ServerFailedToRespond);
-                MyGameService.PingServer(hostAddresses[0].ToIPv4NetworkOrder(), num);
+                MyGameService.PingServer(hostAddresses[0].ToString());
             }
             catch (Exception ex)
             {
