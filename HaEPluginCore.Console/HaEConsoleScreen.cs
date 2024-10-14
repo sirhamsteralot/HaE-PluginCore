@@ -99,7 +99,7 @@ namespace HaEPluginCore.Console
                 _instance.CloseScreen();
         }
 
-        public override bool CloseScreen()
+        public override bool CloseScreen(bool isUnloading = false)
         {
             _instance = null;
             return base.CloseScreen();
