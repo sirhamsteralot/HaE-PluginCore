@@ -28,22 +28,25 @@ namespace HaEPluginCore.Console
         {
             _instance = this;
 
-            HaEInputHandler.HaEKeyCombination enter = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.C, VRage.Input.MyKeys.RightAlt, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, HaEConsoleScreen.Show);
-            HaEPluginCore.HaEInputHandler.AddCombination(enter);
 
-            HaEInputHandler.HaEKeyCombination exit = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.Escape, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, HaEConsoleScreen.Close);
-            HaEPluginCore.HaEInputHandler.AddCombination(exit);
+            HaEPluginCore.OnInit += () => {
+                HaEInputHandler.HaEKeyCombination enter = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.C, VRage.Input.MyKeys.RightAlt, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, HaEConsoleScreen.Show);
+                HaEPluginCore.HaEInputHandler.AddCombination(enter);
 
-            _displayScreen = new StringBuilder();
-            _commandHistory = new LinkedList<string>();
-            commands = new Dictionary<string, HaEConsoleCommand>();
+                HaEInputHandler.HaEKeyCombination exit = new HaEInputHandler.HaEKeyCombination(VRage.Input.MyKeys.Escape, VRage.Input.MyKeys.None, VRage.Input.MyKeys.None, HaEConstants.quarterSecTimeOut, HaEConsoleScreen.Close);
+                HaEPluginCore.HaEInputHandler.AddCombination(exit);
 
-            CommandBinder = new HaEConsoleCommandBinder();
+                _displayScreen = new StringBuilder();
+                _commandHistory = new LinkedList<string>();
+                commands = new Dictionary<string, HaEConsoleCommand>();
 
-            HaEConsoleScreen.RegisterKeys();
-            HaEConsoleDefaultCommands.RegisterCommands();
+                CommandBinder = new HaEConsoleCommandBinder();
 
-            OnPluginReady?.Invoke();
+                HaEConsoleScreen.RegisterKeys();
+                HaEConsoleDefaultCommands.RegisterCommands();
+
+                OnPluginReady?.Invoke();
+            };
         }
 
         public static void ExecWhenPluginReady(Action action)
